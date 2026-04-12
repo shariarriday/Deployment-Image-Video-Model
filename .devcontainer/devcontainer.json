@@ -1,0 +1,113 @@
+{
+  "name": "Model Inference API Development",
+  "build": {
+    "dockerfile": "../Dockerfile",
+    "context": ".."
+  },
+  "workspaceFolder": "/app",
+
+  // Features to add to the dev container
+  "features": {
+    "ghcr.io/devcontainers/features/git:1": {},
+    "ghcr.io/devcontainers/features/github-cli:1": {}
+  },
+
+  // Configure tool-specific properties
+  "customizations": {
+    "vscode": {
+      // VS Code extensions to install
+      "extensions": [
+        // Python
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "ms-python.black-formatter",
+        "ms-python.isort",
+        "ms-python.debugpy",
+        
+        // API Development
+        "humao.rest-client",
+        "42crunch.vscode-openapi",
+        
+        // Docker
+        "ms-azuretools.vscode-docker",
+        
+        // Git
+        "eamodio.gitlens",
+        
+        // General productivity
+        "streetsidesoftware.code-spell-checker",
+        "gruntfuggly.todo-tree",
+        "usernamehw.errorlens",
+        "PKief.material-icon-theme"
+      ],
+      
+      // VS Code settings
+      "settings": {
+        "python.defaultInterpreterPath": "/usr/local/bin/python",
+        "python.linting.enabled": true,
+        "python.linting.pylintEnabled": false,
+        "python.linting.flake8Enabled": true,
+        "python.formatting.provider": "none",
+        "python.analysis.typeCheckingMode": "basic",
+        "python.analysis.autoImportCompletions": true,
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+          "source.organizeImports": "explicit"
+        },
+        "[python]": {
+          "editor.defaultFormatter": "ms-python.black-formatter",
+          "editor.formatOnSave": true,
+          "editor.codeActionsOnSave": {
+            "source.organizeImports": "explicit"
+          }
+        },
+        "black-formatter.args": [
+          "--line-length=100"
+        ],
+        "isort.args": [
+          "--profile=black"
+        ],
+        "files.exclude": {
+          "**/__pycache__": true,
+          "**/*.pyc": true,
+          "**/.pytest_cache": true
+        },
+        "terminal.integrated.defaultProfile.linux": "bash"
+      }
+    }
+  },
+
+  // Forward ports for the API
+  "forwardPorts": [8000],
+  "portsAttributes": {
+    "8000": {
+      "label": "FastAPI Server",
+      "onAutoForward": "notify"
+    }
+  },
+
+  // Set environment variables
+  "containerEnv": {
+    "DEBUG": "True",
+    "PYTHONPATH": "/app"
+  },
+
+  // Use 'postCreateCommand' to run commands after the container is created
+  "postCreateCommand": "pip install pytest pytest-asyncio pytest-cov black httpx torch==2.2.0+cpu torchvision==0.17.0+cpu -f https://download.pytorch.org/whl/torch_stable.html",
+
+  // Run commands after the container starts
+  "postStartCommand": "echo 'Container started! Run: python main.py'",
+
+  // Comment out to connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root
+  "remoteUser": "root",
+
+  // Lifecycle scripts
+  "initializeCommand": "echo 'Initializing devcontainer...'",
+  "onCreateCommand": "echo 'Container created successfully!'",
+  
+  // Keep container running - override CMD in Dockerfile
+  "overrideCommand": true,
+  
+  // Command to keep container alive
+  "shutdownAction": "stopContainer"
+}

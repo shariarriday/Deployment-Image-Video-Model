@@ -1,0 +1,32 @@
+# FastAPI and web server
+fastapi==0.109.0
+uvicorn[standard]==0.27.0
+python-multipart==0.0.6
+
+# Database
+sqlalchemy==2.0.25
+alembic==1.13.1
+
+# Configuration
+pydantic==2.5.3
+pydantic-settings==2.1.0
+python-dotenv==1.0.0
+
+# PyTorch and ML
+# torch==2.2.0
+# torchvision==0.17.0
+# Note: For CPU-only installation, use these commands instead:
+# pip install torch==2.2.0+cpu torchvision==0.17.0+cpu -f https://download.pytorch.org/whl/torch_stable.html
+
+# Image/Video processing
+Pillow==10.2.0
+opencv-python-headless==4.9.0.80
+
+# Utilities
+requests==2.31.0
+tqdm==4.66.1
+aiofiles==23.2.1
+google-cloud-storage==2.18.2
+
+# Logging and monitoring
+python-json-logger==2.0.7
