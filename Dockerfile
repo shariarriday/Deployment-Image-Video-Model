@@ -24,6 +24,18 @@ COPY requirements.txt .
 # Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Install pytorch and torchvision for linux
+RUN pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
+
+RUN apt-get update && apt-get install -y libgl1
+
+RUN apt-get update && apt-get install -y \
+    libglib2.0-0 \
+    libsm6 \
+    libxrender1 \
+    libxext6 \
+    && rm -rf /var/lib/apt/lists/*
+
 # Copy application code
 COPY . .
 

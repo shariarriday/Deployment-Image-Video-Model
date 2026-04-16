@@ -34,6 +34,7 @@ class InferenceQueue:
         self.command_template = getattr(settings, "INFERENCE_COMMAND", "").strip()
         self.temp_root_dir = getattr(settings, "INFERENCE_TEMP_DIR", "./tmp_inference")
         self.result_file_name = getattr(settings, "INFERENCE_RESULT_FILE", "result.json")
+        self.weight_path = getattr(settings, "MODEL_WEIGHTS_DIR", "./model_weights")
 
     def _run_external_command(self, source_file_path: str, request_id: str) -> dict[str, Any]:
         """Copy input file to a temp directory, run command, then read result JSON."""
@@ -45,14 +46,19 @@ class InferenceQueue:
         with tempfile.TemporaryDirectory(prefix=f"{request_id}_", dir=self.temp_root_dir) as temp_dir:
             temp_dir_path = Path(temp_dir)
             temp_input_path = temp_dir_path / Path(source_file_path).name
+            print(f"Copying {source_file_path} to {temp_input_path}")
+            print(temp_dir_path, temp_input_path)
             shutil.copy2(source_file_path, temp_input_path)
+
+            temp_weight_path = Path(self.weight_path) / "best_model.pth"
+            temp_label_path = Path(self.weight_path) / "label_maps.json"
 
             result_json_path = temp_dir_path / self.result_file_name
             command = self.command_template
-            command = command.replace("{input_file}", str(temp_input_path))
-            command = command.replace("{work_dir}", str(temp_dir_path))
-            command = command.replace("{result_json}", str(result_json_path))
-            command = command.replace("{request_id}", request_id)
+            command = command.replace("$WEIGHTS_PATH", str(temp_weight_path))
+            command = command.replace("$LABEL_PATH", str(temp_label_path))
+            command = command.replace("$VIDEO_PATH", str(temp_input_path))
+            command = command.replace("$OUTPUT_PATH", str(result_json_path))
 
             completed = subprocess.run(
                 command,

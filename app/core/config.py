@@ -34,8 +34,12 @@ class Settings(BaseSettings):
     # Queue settings
     MAX_QUEUE_SIZE: int = 1000
     WORKER_COUNT: int = 2
-    INFERENCE_COMMAND: str = "echo '{\"confidence\": 0.95, \"prediction\": \"cat\", \"filename\": \"image.jpg\"}' > result.json"
-    INFERENCE_TEMP_DIR: str = "./tmp_inference"
+    INFERENCE_COMMAND: str = "python /app/model/src/inference.py \
+                                --weight_path $WEIGHTS_PATH \
+                                --label_path $LABEL_PATH \
+                                --video_path $VIDEO_PATH \
+                                --output_path $OUTPUT_PATH"
+    INFERENCE_TEMP_DIR: str = "/tmp_inference"
     INFERENCE_RESULT_FILE: str = "result.json"
     
     class Config:
