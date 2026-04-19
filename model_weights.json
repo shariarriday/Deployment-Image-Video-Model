@@ -1,4 +1,4 @@
 [
-  {"file_name": "gs://inference-exercise/weights/best_model.pth", "local_name": "best_model.pth"},
-  {"file_name": "gs://inference-exercise/weights/label_maps.json", "local_name": "label_maps.json"}
+  {"file_name": "gs://inference-exercise/dfu-weights/best_yolov8x.pt", "local_name": "best_yolov8x.pt"},
+  {"file_name": "gs://inference-exercise/dfu-weights/best_yolo26m.pt", "local_name": "best_yolo26m.pt"}
 ]

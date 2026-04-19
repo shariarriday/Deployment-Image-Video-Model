@@ -73,3 +73,5 @@ htmlcov/
 #Environment variables
 .env
 .env.local
+
+service-accounts.json

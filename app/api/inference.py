@@ -1,5 +1,6 @@
 """API endpoints for inference requests"""
 from fastapi import APIRouter, UploadFile, File, Depends, HTTPException, Query, status
+from fastapi.responses import FileResponse
 from sqlalchemy.orm import Session
 from pathlib import Path
 import uuid
@@ -143,17 +144,10 @@ async def get_inference_result(
             detail=f"Request {request_id} not found"
         )
     
-    return InferenceResult(
-        id=request.id,
-        file_type=request.file_type,
-        status=request.status,
-        result=request.result,
-        error=request.error,
-        confidence=request.confidence,
-        processing_time=request.processing_time,
-        created_at=request.created_at,
-        updated_at=request.updated_at
-    )
+    #return the image stored in the result_path
+    print(f"Request result path: {request.result}")
+    return FileResponse(request.result, media_type="image/jpeg")
+
 
 
 @router.get("/inference")

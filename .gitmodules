@@ -1,4 +1,0 @@
-[submodule "model"]
-	path = model
-	url = https://github.com/shariarriday/cnn-transformer-pipeline.git
-	branch = graph-lstm/classification
