@@ -8,6 +8,7 @@ Usage:
 
 import argparse
 from pathlib import Path
+from PIL import Image
 from ultralytics import YOLO
 
 DATASET_ROOT    = Path(__file__).parent
@@ -50,14 +51,40 @@ if __name__ == "__main__":
         conf=args.conf,
         iou=args.iou,
         imgsz=IMG_SIZE,
-        save=True,
+        save=False,
         save_txt=False,
-        project=str(args.output),
-        name="results",
-        exist_ok=True,
-        line_width=2,
+        verbose=False,
     )
 
     r = results[0]
-    print(f"{len(r.boxes)} detection(s) found")
-    print(f"Annotated image saved to: {Path(args.output) / 'results' / source.name}")
+    names = model.names
+
+    print(f"{len(r.boxes)} detection(s) found\n")
+
+    if len(r.boxes) == 0:
+        print("No detections — nothing to crop.")
+    else:
+        image = Image.open(source).convert("RGB")
+        output_dir = Path(args.output)
+        output_dir.mkdir(parents=True, exist_ok=True)
+
+        for i, box in enumerate(r.boxes):
+            cls_id = int(box.cls)
+            label  = names[cls_id]
+            conf   = float(box.conf)
+            x1, y1, x2, y2 = (int(v) for v in box.xyxy[0].tolist())
+
+            crop = image.crop((x1, y1, x2, y2))
+
+            # e.g. image_dog_0_0.91.jpg
+            out_name = f"result.jpg"
+            out_path = output_dir / out_name
+            crop.save(out_path)
+
+            print(f"  [{i}] {label} ({conf:.2f}) → {out_path}")
+
+        print(f"\nAll crops saved to: {output_dir}")
+
+    # r = results[0]
+    # print(f"{len(r.boxes)} detection(s) found")
+    # print(f"Annotated image saved to: {Path(args.output) / 'results' / source.name}")

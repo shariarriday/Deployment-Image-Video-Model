@@ -35,9 +35,13 @@ class Settings(BaseSettings):
     MAX_QUEUE_SIZE: int = 1000
     WORKER_COUNT: int = 2
     INFERENCE_COMMAND: str = "python /app/model/infer_yolo26.py \
-                                --weights $WEIGHTS_PATH \
+                                --weights $WEIGHTS_PATH_YOLO \
                                 --source $INPUT_PATH \
-                                --output $OUTPUT_PATH"
+                                --output $OUTPUT_PATH && \
+                                python /app/model/Inference_test.py \
+                                    --weights $WEIGHTS_PATH_CLASSIFIER \
+                                    --source $OUTPUT_PATH/result.jpg \
+                                    --output $OUTPUT_PATH/result.json"
     INFERENCE_TEMP_DIR: str = "/tmp_inference"
     INFERENCE_RESULT_FILE: str = "result.json"
     

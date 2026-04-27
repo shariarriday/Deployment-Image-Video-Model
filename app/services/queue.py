@@ -49,12 +49,16 @@ class InferenceQueue:
             print(temp_dir_path, temp_input_path)
             shutil.copy2(source_file_path, temp_input_path)
 
-            temp_weight_path = Path(self.weight_path) / "best_yolo26m.pt"
+            temp_weight_path_yolo = Path(self.weight_path) / "best_yolo26m.pt"
+            temp_weight_path_densenet = Path(self.weight_path) / "best_densenet.pt"
+            temp_result_path = Path(temp_dir_path)
+            temp_output_path = temp_dir_path / "result.json"
 
             command = self.command_template
-            command = command.replace("$WEIGHTS_PATH", str(temp_weight_path))
+            command = command.replace("$WEIGHTS_PATH_YOLO", str(temp_weight_path_yolo))
+            command = command.replace("$WEIGHTS_PATH_CLASSIFIER", str(temp_weight_path_densenet))
             command = command.replace("$INPUT_PATH", str(temp_input_path))
-            command = command.replace("$OUTPUT_PATH", str(self.temp_root_dir))
+            command = command.replace("$OUTPUT_PATH", str(temp_result_path))
 
             completed = subprocess.run(
                 command,
@@ -64,24 +68,33 @@ class InferenceQueue:
                 capture_output=True,
             )
 
-            result_path = Path(self.temp_root_dir) / "results" / f"{request_id}.jpg"
+            # result_path = Path(self.temp_root_dir) / "results" / f"{request_id}.jpg"
 
             if completed.returncode != 0:
                 raise RuntimeError(
                     f"Inference command failed with code {completed.returncode}. "
                     f"stderr: {completed.stderr.strip()}"
                 )
-
-            if not result_path.exists():
+            
+            result_payload = {}
+            # Read json from result file
+            if temp_output_path.exists():
+                with open(temp_output_path, "r") as f:
+                    result_payload = json.load(f)
+            else: 
                 raise FileNotFoundError(
-                    f"Expected result file not found: {result_path}"
+                    f"Expected result file not found: {temp_output_path}"
                 )
 
-            result_payload = {"result_file": str(result_path)}
+            # if not result_path.exists():
+            #     raise FileNotFoundError(
+            #         f"Expected result file not found: {result_path}"
+            #     )
 
-            if not isinstance(result_payload, dict):
-                raise ValueError("result.json must contain a JSON object")
+            # result_payload = {"result_file": str(result_path)}
 
+            # if not isinstance(result_payload, dict):
+            #     raise ValueError("result.json must contain a JSON object")
             return result_payload
 
     def _run_model_inference(self, request: InferenceRequest) -> dict[str, Any]:
@@ -231,7 +244,8 @@ class InferenceQueue:
             
             # Update request with results
             request.status = "completed"
-            request.result = result.get("result_file")
+            # request.result = result.get("result_file")
+            request.result = str(result)
 
             confidence_value = result.get("confidence")
             if isinstance(confidence_value, (int, float)):

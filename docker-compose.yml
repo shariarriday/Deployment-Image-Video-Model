@@ -7,7 +7,7 @@ services:
       dockerfile: Dockerfile
     container_name: model-inference-api
     ports:
-      - "9876:8000"
+      - "7722:8000"
     volumes:
       # Mount volumes for persistent storage
       - ./uploads:/app/uploads

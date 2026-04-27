@@ -144,10 +144,21 @@ async def get_inference_result(
             detail=f"Request {request_id} not found"
         )
     
-    #return the image stored in the result_path
-    print(f"Request result path: {request.result}")
-    return FileResponse(request.result, media_type="image/jpeg")
+    # #return the image stored in the result_path
+    # print(f"Request result path: {request.result}")
+    # return FileResponse(request.result, media_type="image/jpeg")
 
+    return InferenceResult(
+        id=request.id,
+        file_type=request.file_type,
+        status=request.status,
+        result=request.result,
+        error=request.error,
+        confidence=request.confidence,
+        processing_time=request.processing_time,
+        created_at=request.created_at,
+        updated_at=request.updated_at
+    )
 
 
 @router.get("/inference")

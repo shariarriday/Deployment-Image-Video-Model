@@ -1,4 +1,5 @@
 [
   {"file_name": "gs://inference-exercise/dfu-weights/best_yolov8x.pt", "local_name": "best_yolov8x.pt"},
-  {"file_name": "gs://inference-exercise/dfu-weights/best_yolo26m.pt", "local_name": "best_yolo26m.pt"}
+  {"file_name": "gs://inference-exercise/dfu-weights/best_yolo26m.pt", "local_name": "best_yolo26m.pt"},
+  {"file_name": "gs://inference-exercise/dfu-weights/best_densenet.pt", "local_name": "best_densenet.pt"}
 ]

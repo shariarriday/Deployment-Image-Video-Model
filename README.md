@@ -63,8 +63,8 @@ docker-compose up --build
 
 1. Access:
 
-- API docs: [http://localhost:9876/docs](http://localhost:9876/docs)
-- Health: [http://localhost:9876/api/v1/health](http://localhost:9876/api/v1/health)
+- API docs: [http://localhost:7722/docs](http://localhost:7722/docs)
+- Health: [http://localhost:7722/api/v1/health](http://localhost:7722/api/v1/health)
 
 ### Local Development
 
@@ -169,7 +169,7 @@ docker-compose up --build -d
 1. Validate:
 
 ```bash
-curl http://localhost:9876/api/v1/health
+curl http://localhost:7722/api/v1/health
 docker-compose logs -f model-api
 ```
 
