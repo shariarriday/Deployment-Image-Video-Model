@@ -49,7 +49,7 @@ class InferenceQueue:
             print(temp_dir_path, temp_input_path)
             shutil.copy2(source_file_path, temp_input_path)
 
-            temp_weight_path = Path(self.weight_path) / "best_yolo26m.pt"
+            temp_weight_path = Path(self.weight_path) / "model_best.pth"
 
             command = self.command_template
             command = command.replace("$WEIGHTS_PATH", str(temp_weight_path))
@@ -64,7 +64,7 @@ class InferenceQueue:
                 capture_output=True,
             )
 
-            result_path = Path(self.temp_root_dir) / "results" / f"{request_id}.jpg"
+            result_path = Path(self.temp_root_dir) / f"{request_id}_landmarks.png"
 
             if completed.returncode != 0:
                 raise RuntimeError(
@@ -204,7 +204,7 @@ class InferenceQueue:
                     service_account_file=settings.GCS_SERVICE_ACCOUNT_FILE,
                     bucket_name=settings.GCS_BUCKET_NAME,
                     source_file_path=request.file_path,
-                    destination_blob_name=f"processed/{Path(request.file_path).name}",
+                    destination_blob_name=f"cephalometric/{Path(request.file_path).name}",
                 )
                 if not uploaded_file_url:
                     raise RuntimeError("Processed file upload failed")

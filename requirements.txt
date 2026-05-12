@@ -20,8 +20,8 @@ python-dotenv==1.0.0
 # pip install torch==2.2.0+cpu torchvision==0.17.0+cpu -f https://download.pytorch.org/whl/torch_stable.html
 
 # Image/Video processing
-Pillow==10.2.0
-opencv-python-headless==4.9.0.80
+# Pillow==10.2.0
+# opencv-python-headless==4.9.0.80
 
 # Utilities
 requests==2.31.0
@@ -32,7 +32,22 @@ google-cloud-storage==2.18.2
 # Logging and monitoring
 python-json-logger==2.0.7
 
-numpy
-pandas
+Flask==2.3.2
+hdf5storage==0.1.19
+matplotlib==3.7.1
+numpy==1.23.5
+opencv_python==4.7.0.72
+opencv_python_headless==4.7.0.72
+pandas==1.5.3
+Pillow
+scipy==1.10.1
+scikit-image
+torchaudio
+tensorboardX==2.6
+Werkzeug==2.3.4
+yacs==0.1.8
+utils==1.0.1
+hdf5storage
+flask-cors
 
 ultralytics

@@ -7,10 +7,6 @@ from torch.utils.data import DataLoader
 from PIL import Image, ImageDraw
 import numpy as np
 
-
-# Add project path
-sys.path.insert(0, PROJECT_ROOT)
-
 import lib.models as models
 from lib.config import config, update_config
 from lib.datasets import get_dataset
@@ -24,29 +20,29 @@ from lib.core import function
 def parse_args():
     p = argparse.ArgumentParser()
     p.add_argument("--source",  required=True, type=str, help="Path to input image")
-    p.add_argument("--weights", type=str)
-    p.add_argument("--output",  type=str)
+    p.add_argument("--weights", required=True, type=str, help="Path to model weights")
+    p.add_argument("--output",  required=True, type=str, help="Path to save output image")
+    p.add_argument("--cfg",     required=True, type=str, help="Path to config file")
     return p.parse_args()
 
 if __name__ == "__main__":
     args = parse_args()
 
-    
-    # ===============================
-    # 3. LOAD CONFIG
-    # ===============================
-
     # ===============================
     # 1. SET YOUR PROJECT PATHS
     # ===============================
 
-    CFG_FILE =  "face_alignment_wflw_hrnet_w18.yaml"
+    CFG_FILE =  args.cfg
 
     MODEL_FILE = args.weights
 
     OUTPUT_FOLDER = args.output
 
     IMAGE_PATH = args.source
+    
+    # ===============================
+    # 3. LOAD CONFIG
+    # ===============================
 
     args = argparse.Namespace(
         cfg=CFG_FILE,

@@ -37,6 +37,7 @@ class Settings(BaseSettings):
     INFERENCE_COMMAND: str = "python /app/model/inference.py \
                                 --weights $WEIGHTS_PATH \
                                 --source $INPUT_PATH \
+                                --cfg /app/model/face_alignment_wflw_hrnet_w18.yaml \
                                 --output $OUTPUT_PATH"
     INFERENCE_TEMP_DIR: str = "/tmp_inference"
     INFERENCE_RESULT_FILE: str = "result.json"
