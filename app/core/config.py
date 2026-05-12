@@ -34,7 +34,7 @@ class Settings(BaseSettings):
     # Queue settings
     MAX_QUEUE_SIZE: int = 1000
     WORKER_COUNT: int = 2
-    INFERENCE_COMMAND: str = "python /app/model/infer_yolo26.py \
+    INFERENCE_COMMAND: str = "python /app/model/inference.py \
                                 --weights $WEIGHTS_PATH \
                                 --source $INPUT_PATH \
                                 --output $OUTPUT_PATH"
